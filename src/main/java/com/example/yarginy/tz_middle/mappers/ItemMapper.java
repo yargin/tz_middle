@@ -1,10 +1,14 @@
 package com.example.yarginy.tz_middle.mappers;
 
 import com.example.yarginy.tz_middle.models.Item;
+import com.example.yarginy.tz_middle.models.Topic;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -12,7 +16,17 @@ import java.util.Collection;
 
 @Mapper
 public interface ItemMapper {
-    @Select("select * from topic_items i join topic t on i.topic_id = t.id")
+    @Select("select * from topic_items where topic_id=#{topic.id}")
+    Collection<Item> selectByTopic(Topic topic);
+
+    @Select("select i.*, t.id, t.name from topic_items i join topic t on i.topic_id = t.id")
+    @Results({
+                @Result(property = "id", column = "id", id = true),
+                @Result(property = "name", column = "name"),
+                @Result(property = "order", column = "order"),
+                @Result(property = "topic", column = "topic_id",
+                        one = @One(select = "com.example.yarginy.tz_middle.mappers.TopicMapper.selectTopicById"))
+            })
     Collection<Item> selectAll();
 
     @Insert("insert into topic_items(name, \"order\", topic_id) values (#{name}, #{order}, #{topic.id})")

@@ -3,17 +3,17 @@ package com.example.yarginy.tz_middle.models;
 public class Item {
     private Integer id;
     private String name;
-    private int order;
+    private Integer order;
     private Topic topic;
 
     public Item() {
     }
 
-    public Item(String name, int order, Topic topic) {
+    public Item(String name, Integer order, Topic topic) {
         this(0, name, order, topic);
     }
 
-    public Item(Integer id, String name, int order, Topic topic) {
+    public Item(Integer id, String name, Integer order, Topic topic) {
         this.id = id;
         this.name = name;
         this.order = order;
@@ -36,11 +36,11 @@ public class Item {
         this.name = name;
     }
 
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 

@@ -1,9 +1,12 @@
 package com.example.yarginy.tz_middle.models;
 
+import java.util.Collection;
+
 public class Topic {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
+    private Collection<Item> items;
 
     public Topic() {
     }
@@ -12,7 +15,7 @@ public class Topic {
         this(0, name, description);
     }
 
-    public Topic(int id, String name, String description) {
+    public Topic(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -23,11 +26,11 @@ public class Topic {
         return "Topic{id=" + id + ", name='" + name + "'}";
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -45,5 +48,13 @@ public class Topic {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Collection<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Collection<Item> items) {
+        this.items = items;
     }
 }
