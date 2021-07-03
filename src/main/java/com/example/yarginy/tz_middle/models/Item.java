@@ -1,5 +1,7 @@
 package com.example.yarginy.tz_middle.models;
 
+import java.util.Objects;
+
 public class Item {
     private Integer id;
     private String name;
@@ -50,6 +52,20 @@ public class Item {
 
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return Objects.equals(id, item.id) && Objects.equals(name, item.name) && Objects.equals(order, item.order) &&
+                Objects.equals(topic, item.topic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, order, topic);
     }
 
     @Override

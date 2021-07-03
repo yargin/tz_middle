@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @MappedTypes({Item.class, Topic.class})
 @MapperScan("com.example.yarginy.tz_middle.mappers")
-@ComponentScan("com.example.yarginy.tz_middle.mappers")
+@ComponentScan("com.example.yarginy.tz_middle")
 public class TzMiddleApplication {
     public static void main(String[] args) {
         SpringApplication.run(TzMiddleApplication.class, args);

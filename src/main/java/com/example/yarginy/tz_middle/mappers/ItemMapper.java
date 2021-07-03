@@ -25,7 +25,7 @@ public interface ItemMapper {
                 @Result(property = "name", column = "name"),
                 @Result(property = "order", column = "order"),
                 @Result(property = "topic", column = "topic_id",
-                        one = @One(select = "com.example.yarginy.tz_middle.mappers.TopicMapper.selectTopicById"))
+                        one = @One(select = "com.example.yarginy.tz_middle.mappers.TopicMapper.selectTopicViewById"))
             })
     Collection<Item> selectAll();
 
@@ -33,8 +33,19 @@ public interface ItemMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     boolean insert(Item item);
 
-    @Update("update topic_item set name=#{name}, \"order\"=#{order}, topic_id=#{topic.id}")
+    @Insert("<script> insert into topic_items(name, \"order\", topic_id) values" +
+            "<foreach collection='items' item='item' separator=','>" +
+            "(#{item.name}, #{item.order}, #{item.topic.id})</foreach></script>")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    boolean insertAll(Collection<Item> items);
+
+    @Update("update topic_items set name=#{name}, \"order\"=#{order}, topic_id=#{topic.id}")
     boolean update(Item item);
+
+    @Update("<script> <foreach collection='items' item='item' separator=';'>" +
+            "update topic_items set name=#{item.name}, \"order\"=#{item.order} where id=#{item.id}" +
+            "</foreach> </script>")
+    boolean updateAll(Collection<Item> items);
 
     @Delete("delete from topic_items where id = #{id}")
     boolean delete(Item item);

@@ -1,6 +1,7 @@
 package com.example.yarginy.tz_middle.models;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class Topic {
     private Integer id;
@@ -19,11 +20,6 @@ public class Topic {
         this.id = id;
         this.name = name;
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Topic{id=" + id + ", name='" + name + "'}";
     }
 
     public Integer getId() {
@@ -56,5 +52,24 @@ public class Topic {
 
     public void setItems(Collection<Item> items) {
         this.items = items;
+    }
+
+    @Override
+    public String toString() {
+        return "Topic{id=" + id + ", name='" + name + "'}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Topic topic = (Topic) o;
+        return Objects.equals(id, topic.id) && Objects.equals(name, topic.name) && Objects.equals(description,
+                topic.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description);
     }
 }
