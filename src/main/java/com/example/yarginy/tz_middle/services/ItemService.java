@@ -29,19 +29,18 @@ public class ItemService {
         return itemMapper.insert(item);
     }
 
-    public boolean insert(Collection<Item> items) {
-        return items == null || itemMapper.insertAll(items);
+    public boolean insertFromTopic(Topic topic) {
+        Collection<Item> items = topic.getItems();
+        if (items.isEmpty()) { return true; }
+        topic.getItems().forEach(item -> item.setTopic(topic));
+        return itemMapper.insertAll(items);
     }
 
     public boolean update(Item item) {
         return itemMapper.update(item);
     }
 
-    public boolean update(Collection<Item> items) {
-        return itemMapper.updateAll(items);
-    }
-
-    public boolean update(Topic topic) {
+    public boolean updateFromTopic(Topic topic) {
         Collection<Item> storedItems = selectByTopic(topic);
         Collection<Item> newItems = topic.getItems();
         Collection<Item> itemsToAdd = new ArrayList<>();
@@ -60,7 +59,7 @@ public class ItemService {
         Collection<Item> itemsToDelete = new HashSet<>(storedItems);
         itemsToDelete.removeAll(newItems);
         boolean deleted = itemsToDelete.isEmpty() || itemMapper.deleteAll(itemsToDelete);
-        return inserted || updated || deleted;
+            return inserted || updated || deleted;
     }
 
     public boolean delete(Item item) {

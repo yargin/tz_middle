@@ -3,6 +3,7 @@ package com.example.yarginy.tz_middle.services;
 import com.example.yarginy.tz_middle.handlers.TopicHandler;
 import com.example.yarginy.tz_middle.mappers.TopicMapper;
 import com.example.yarginy.tz_middle.models.Topic;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class TopicService {
         this.itemService = itemService;
     }
 
+    @Cacheable("topics")
     public Collection<Topic> selectAll() {
         return topicMapper.selectAll(topicHandler);
     }
@@ -32,13 +34,13 @@ public class TopicService {
     @Transactional
     public boolean insert(Topic topic) {
         boolean topicInserted = topicMapper.insert(topic);
-        itemService.insert(topic.getItems());
+        itemService.insertFromTopic(topic);
         return topicInserted;
     }
 
     @Transactional
     public boolean update(Topic topic) {
-        itemService.update(topic);
+        itemService.updateFromTopic(topic);
         return topicMapper.update(topic);
     }
 

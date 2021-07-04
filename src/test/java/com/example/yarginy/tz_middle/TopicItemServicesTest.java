@@ -31,7 +31,7 @@ public class TopicItemServicesTest {
     private final Item item2 = new Item("item2", 2, topic);
 
     @Autowired
-    public TopicItemServicesTest(ItemService itemService, TopicService topicService, Flyway flyway) {
+    public TopicItemServicesTest(ItemService itemService, TopicService topicService) {
         this.itemService = itemService;
         this.topicService = topicService;
         Collection<Item> items = asList(item1, item2);

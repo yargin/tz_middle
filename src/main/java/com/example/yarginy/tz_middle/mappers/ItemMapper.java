@@ -2,6 +2,7 @@ package com.example.yarginy.tz_middle.mappers;
 
 import com.example.yarginy.tz_middle.models.Item;
 import com.example.yarginy.tz_middle.models.Topic;
+import org.apache.ibatis.annotations.ConstructorArgs;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

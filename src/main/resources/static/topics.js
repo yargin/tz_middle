@@ -1,13 +1,9 @@
 const ITEM_ID = 'itemId';
 
-function deleteItem(itemId) {
-    $(`#${itemId}`).remove();
-}
-
 function drawTopic(topic) {
     let template = document.querySelector('#template');
     let templateContent = document.importNode(template.content, true);
-    pane.append(templateContent);
+    $('#pane').append(templateContent);
 
     let topicDiv = $('#topic');
     let id = topic.id;
@@ -28,16 +24,25 @@ function drawTopic(topic) {
         addItem(id);
     });
 
-    template = document.querySelector('#existingTopicTemplate');
-    templateContent = document.importNode(template.content, true);
-    topicDiv.append(templateContent);
 
-    $(`#${id} #updateTopic`).click(function () {
-        updateTopic(id)
-    });
-    $(`#${id} #deleteTopic`).click(function () {
-        deleteTopic(id)
-    });
+    if (id !== 0) {
+        template = document.querySelector('#existingTopicTemplate');
+        templateContent = document.importNode(template.content, true);
+        topicDiv.append(templateContent);
+        $(`#${id} #updateTopic`).click(function () {
+            updateTopic(id)
+        });
+        $(`#${id} #deleteTopic`).click(function () {
+            deleteTopic(id)
+        });
+    } else {
+        template = document.querySelector('#newTopicTemplate');
+        templateContent = document.importNode(template.content, true);
+        topicDiv.append(templateContent);
+        $(`#${id} #createTopic`).click(function () {
+            createTopic();
+        })
+    }
 }
 
 function drawItem(id, item) {
@@ -63,18 +68,23 @@ function addItem(id) {
         "name": newItemName.val(),
         "order": newItemOrder.val()
     };
-    console.log(item);
     newItemName.val('');
     newItemOrder.val('');
     drawItem(id, item);
 }
 
 function drawTopics(topics) {
-    let pane = $('#pane');
-    pane.empty();
+    $('#pane').empty();
     for (let i = 0; i < topics.length; i++) {
         drawTopic(topics[i]);
     }
+    let newTopic = {
+        "id": 0,
+        "name": "",
+        "description": "",
+        "items": []
+    };
+    drawTopic(newTopic);
 }
 
 function getAll() {
@@ -89,6 +99,31 @@ function getAll() {
 $(function () {
     getAll();
 })
+
+function deleteItem(itemId) {
+    $(`#${itemId}`).remove();
+}
+
+function createTopic() {
+    let topic = {
+        "id": 0,
+        "name": $(`#0 #topicName`).val(),
+        "description": $(`#0 #topicDescription`).val(),
+        "items": getItems(0)
+    };
+
+    console.log(topic);
+    $.ajax({
+        url: `/topic`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(topic),
+        success: function (topics) {
+            drawTopics(topics);
+        },
+        error: function () { alert('wrong data'); }
+    })
+}
 
 function deleteTopic(id) {
     $.ajax({
@@ -123,7 +158,9 @@ function updateTopic(id) {
         "description": $(`#${id} #topicDescription`).val(),
         "items": getItems(id)
     };
+
     console.log(topic);
+
     $.ajax({
         url: `/topic?id=${id}`,
         method: 'PUT',

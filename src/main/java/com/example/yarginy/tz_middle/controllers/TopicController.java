@@ -29,15 +29,14 @@ public class TopicController {
     }
 
     @PostMapping
-    public Topic create(@RequestBody Topic topic) {
+    public Collection<Topic> create(@RequestBody Topic topic) {
         topicService.insert(topic);
-        return topic;
+        return topicService.selectAll();
     }
 
     @PutMapping
     public Collection<Topic> update(@RequestBody Topic topic) {
         if (topicService.update(topic)) {
-            System.out.println(topicService.selectTopicById(topic.getId()).getItems());
             return topicService.selectAll();
         }
         return null;

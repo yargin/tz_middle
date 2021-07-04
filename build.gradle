@@ -27,6 +27,7 @@ dependencies {
 //    todo change to test scope
     implementation 'com.h2database:h2'
 
+    implementation group: 'com.hazelcast', name: 'hazelcast', version: '4.2'
     testImplementation ('org.flywaydb.flyway-test-extensions:flyway-spring4-test:3.2.1') {
         exclude (group: 'org.slf4j', module: 'slf4j-simple')
     }
