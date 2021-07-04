@@ -10,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -35,6 +33,12 @@ public class TopicService {
     public Collection<Topic> selectAll() {
         Collection<Topic> unsortedTopics = new ArrayList<>();
         topicsCache.forEach((k, v) -> unsortedTopics.add(v));
+        Collection<Topic> selectedTopics;
+        if (unsortedTopics.isEmpty()) {
+            selectedTopics = topicMapper.selectAll(topicHandler);
+            selectedTopics.forEach(topic -> topicsCache.put(topic.getId(), topic));
+            unsortedTopics.addAll(selectedTopics);
+        }
         return unsortedTopics.stream().sorted((o1, o2) -> {
             if (o1.getId() > o2.getId()) {
                 return 1;
@@ -51,7 +55,6 @@ public class TopicService {
     }
 
     @Transactional
-//    @CachePut(value = TOPICS_CACHE, key = "#topic.getId")
     public Topic insert(Topic topic) {
         topicMapper.insert(topic);
         itemService.insertFromTopic(topic);
@@ -60,7 +63,6 @@ public class TopicService {
     }
 
     @Transactional
-//    @CachePut(value = TOPICS_CACHE, key = "#topic.getId")
     public Topic update(Topic topic) {
         itemService.updateFromTopic(topic);
         topicMapper.update(topic);
@@ -68,7 +70,6 @@ public class TopicService {
         return topic;
     }
 
-//    @CacheEvict(TOPICS_CACHE)
     @Transactional
     public Topic delete(Integer id) {
         topicMapper.delete(id);

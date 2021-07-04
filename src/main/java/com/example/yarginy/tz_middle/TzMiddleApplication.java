@@ -25,34 +25,9 @@ import static java.util.Arrays.asList;
 @MappedTypes({Item.class, Topic.class})
 @MapperScan("com.example.yarginy.tz_middle.mappers")
 @EnableCaching
-public class TzMiddleApplication implements CommandLineRunner {
-    private TopicService topicService;
-
-    @Autowired
-    public void setTopicService(TopicService topicService) {
-        this.topicService = topicService;
-    }
-
+public class TzMiddleApplication {
     public static void main(String[] args) {
         SpringApplication.run(TzMiddleApplication.class, args);
-    }
-
-    @Override
-    public void run(String... args) {
-        Topic topic = new Topic("testTpic", "desc");
-        Item item1 = new Item("item1", 1, topic);
-        Item item2 = new Item("item2", 2, topic);
-        topic.setItems(asList(item1, item2));
-        topicService.insert(topic);
-
-        topic = new Topic("testTopic2", "desc2");
-        item1 = new Item("item11", 1, topic);
-        item2 = new Item("item22", 2, topic);
-        topic.setItems(asList(item1, item2));
-        topicService.insert(topic);
-
-        System.out.println(topicService.selectTopicById(1).getItems());
-        System.out.println(topicService.selectTopicById(2).getItems());
     }
 
     @Bean("hazelcastInstance")

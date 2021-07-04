@@ -8,6 +8,15 @@ group = 'com.example.yarginy'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'logging.level.com.example.yarginy.tz_middle.TzMiddleApplication'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     mavenCentral()
 }
@@ -25,8 +34,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0'
-//    todo change to test scope
-    implementation 'com.h2database:h2'
+    testImplementation 'com.h2database:h2'
 
     implementation group: 'com.hazelcast', name: 'hazelcast', version: '4.2'
     testImplementation ('org.flywaydb.flyway-test-extensions:flyway-spring4-test:3.2.1') {
