@@ -41,11 +41,14 @@ public class ItemService {
         return itemMapper.updateAll(items);
     }
 
-    public boolean update(Collection<Item> storedItems, Collection<Item> newItems) {
+    public boolean update(Topic topic) {
+        Collection<Item> storedItems = selectByTopic(topic);
+        Collection<Item> newItems = topic.getItems();
         Collection<Item> itemsToAdd = new ArrayList<>();
         Collection<Item> itemsToUpdate = new ArrayList<>();
         newItems.forEach(i -> {
             if (i.getId() == 0) {
+                i.setTopic(topic);
                 itemsToAdd.add(i);
             } else {
                 itemsToUpdate.add(i);

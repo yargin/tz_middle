@@ -4,10 +4,12 @@ import com.example.yarginy.tz_middle.models.Topic;
 import com.example.yarginy.tz_middle.services.TopicService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -33,12 +35,19 @@ public class TopicController {
     }
 
     @PutMapping
-    public boolean update(@RequestBody Topic topic) {
-        return topicService.update(topic);
+    public Collection<Topic> update(@RequestBody Topic topic) {
+        if (topicService.update(topic)) {
+            System.out.println(topicService.selectTopicById(topic.getId()).getItems());
+            return topicService.selectAll();
+        }
+        return null;
     }
 
     @DeleteMapping
-    public boolean delete(@RequestBody Topic topic) {
-        return topicService.delete(topic);
+    public Collection<Topic> delete(@RequestParam Integer id) {
+        if (topicService.delete(id)) {
+            return topicService.selectAll();
+        }
+        return null;
     }
 }

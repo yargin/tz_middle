@@ -6,6 +6,7 @@ import com.example.yarginy.tz_middle.services.ItemService;
 import com.example.yarginy.tz_middle.services.TopicService;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.test.annotation.FlywayTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,9 @@ public class TopicItemServicesTest {
         topic.setItems(items);
     }
 
-    @BeforeAll
-    public static void initDb() {
-    }
-
     @BeforeEach
-    public void init() {
-        topicService.delete(topic);
+    public void initTestValues() {
+        topicService.deleteAll();
         topic.setId(0);
         item1.setId(0);
         item2.setId(0);

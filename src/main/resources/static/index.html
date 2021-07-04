@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Topics</title>
+    <link href="css.css" type="text/css" rel="stylesheet">
+    <script src="/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/topics.js"></script>
+</head>
+<body>
+
+<div id="pane" class="pane">
+
+</div>
+
+</body>
+</html>
+
+<template id="template">
+    <div id="topic" class="topic">
+        <div id="name">
+            <label for="topicName">Name: </label>
+            <input id="topicName">
+        </div>
+        <div id="description">
+            <label for="topicDescription">Description: </label>
+            <input id="topicDescription">
+        </div>
+        <br>
+        <div id="items">
+        </div>
+        <div id="newItem">
+            <label for="newItemName">Name: </label>
+            <input id="newItemName">
+            <label for="newItemOrder">Order: </label>
+            <input id="newItemOrder" size="1">
+            <button id="addItem">Add</button>
+        </div>
+        <br>
+    </div>
+</template>
+
+<template id="itemTemplate">
+    <div id="item" class="item">
+        <label for="itemName">Name: </label>
+        <input id="itemName" name="itemName">
+        <label for="itemOrder">Order: </label>
+        <input id="itemOrder" name="itemOrder" size="1">
+        <button id="deleteItem">Delete</button>
+    </div>
+</template>
+
+<template id="existingTopicTemplate">
+    <button id="updateTopic">Update</button>
+    <button id="deleteTopic">Delete</button>
+</template>
+<template id="newTopicTemplate">
+    <button id="createTopic">Create</button>
+</template>

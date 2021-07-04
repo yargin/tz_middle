@@ -16,10 +16,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    implementation ('org.webjars:jquery-ui:1.12.1') {
+        exclude (group: 'org.webjars', module: 'jquery')
+    }
+    implementation 'org.webjars:jquery:2.2.4'
+    implementation 'org.webjars:webjars-locator-core:0.46'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0'
-    testImplementation 'com.h2database:h2'
+//    todo change to test scope
+    implementation 'com.h2database:h2'
+
     testImplementation ('org.flywaydb.flyway-test-extensions:flyway-spring4-test:3.2.1') {
         exclude (group: 'org.slf4j', module: 'slf4j-simple')
     }

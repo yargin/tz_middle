@@ -55,5 +55,8 @@ public interface TopicMapper {
     boolean update(Topic topic);
 
     @Delete("delete from topic where id=#{id}")
-    boolean delete(Topic topic);
+    boolean delete(Integer id);
+
+    @Delete("delete from topic")
+    boolean deleteAll();
 }
