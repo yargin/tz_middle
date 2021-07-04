@@ -48,7 +48,7 @@ public class TopicItemServicesTest {
 
     @Test
     public void testInsertAndDeleteItem() {
-        assertTrue(topicService.insert(topic));
+        topicService.insert(topic);
         assertEquals(2, itemService.selectAll().size());
         assertTrue(itemService.delete(topic.getItems()));
         assertEquals(0, itemService.selectAll().size());
@@ -56,7 +56,7 @@ public class TopicItemServicesTest {
 
     @Test
     public void testInsertAndDeleteTopics() {
-        assertTrue(topicService.insert(topic));
+        topicService.insert(topic);
         Collection<Topic> topics = topicService.selectAll();
         assertEquals(1, topics.size());
         Topic created = topicService.selectTopicById(topic.getId());

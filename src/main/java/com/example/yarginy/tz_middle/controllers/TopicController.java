@@ -2,6 +2,8 @@ package com.example.yarginy.tz_middle.controllers;
 
 import com.example.yarginy.tz_middle.models.Topic;
 import com.example.yarginy.tz_middle.services.TopicService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,19 +36,15 @@ public class TopicController {
         return topicService.selectAll();
     }
 
-    @PutMapping
-    public Collection<Topic> update(@RequestBody Topic topic) {
-        if (topicService.update(topic)) {
-            return topicService.selectAll();
-        }
-        return null;
+    @PutMapping(produces = {"application/json"})
+    public Collection<Topic> update(@RequestBody Topic topic) throws JsonProcessingException {
+        topicService.update(topic);
+        return topicService.selectAll();
     }
 
     @DeleteMapping
     public Collection<Topic> delete(@RequestParam Integer id) {
-        if (topicService.delete(id)) {
-            return topicService.selectAll();
-        }
-        return null;
+        topicService.delete(id);
+        return topicService.selectAll();
     }
 }

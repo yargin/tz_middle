@@ -31,8 +31,10 @@ public class ItemService {
 
     public boolean insertFromTopic(Topic topic) {
         Collection<Item> items = topic.getItems();
-        if (items.isEmpty()) { return true; }
-        topic.getItems().forEach(item -> item.setTopic(topic));
+        if (items.isEmpty()) {
+            return true;
+        }
+        topic.getItems().forEach(item -> item.setTopic(new Topic(topic.getId())));
         return itemMapper.insertAll(items);
     }
 
@@ -59,7 +61,8 @@ public class ItemService {
         Collection<Item> itemsToDelete = new HashSet<>(storedItems);
         itemsToDelete.removeAll(newItems);
         boolean deleted = itemsToDelete.isEmpty() || itemMapper.deleteAll(itemsToDelete);
-            return inserted || updated || deleted;
+        newItems.forEach(i -> i.setTopic(null));
+        return inserted || updated || deleted;
     }
 
     public boolean delete(Item item) {

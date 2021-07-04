@@ -1,8 +1,11 @@
 package com.example.yarginy.tz_middle.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Item {
+public class Item implements Serializable {
     private Integer id;
     private String name;
     private Integer order;

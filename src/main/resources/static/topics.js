@@ -50,14 +50,15 @@ function drawItem(id, item) {
     let templateContent = document.importNode(template.content, true);
     $(`#${id} #items`).append(templateContent);
 
-    let itemId = ITEM_ID + item.id;
-    $('#item').prop('id', itemId);
-    $(`#${itemId} #itemName`).val(item.name);
-    $(`#${itemId} #itemOrder`).val(item.order);
+    $('#item #itemName').val(item.name);
+    $('#item #itemOrder').val(item.order);
 
-    $(`#${itemId} #deleteItem`).click(function () {
+    let itemId = ITEM_ID + item.id;
+    $('#item #deleteItem').click(function () {
         deleteItem(itemId);
     });
+
+    $('#item').prop('id', itemId);
 }
 
 function addItem(id) {
@@ -119,6 +120,7 @@ function createTopic() {
         contentType: 'application/json',
         data: JSON.stringify(topic),
         success: function (topics) {
+            console.log('in draw:' + topics)
             drawTopics(topics);
         },
         error: function () { alert('wrong data'); }
@@ -159,14 +161,15 @@ function updateTopic(id) {
         "items": getItems(id)
     };
 
-    console.log(topic);
-
     $.ajax({
         url: `/topic?id=${id}`,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(topic),
         success: function (topics) {
+            for (let i = 0; i < topics.length; i++) {
+                console.log('in ajax update: ' + topics[i]);
+            }
             drawTopics(topics);
         },
         error: function () { alert('wrong data'); }

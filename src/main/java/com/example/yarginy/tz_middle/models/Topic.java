@@ -1,15 +1,20 @@
 package com.example.yarginy.tz_middle.models;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
-public class Topic {
+public class Topic implements Serializable {
     private Integer id;
     private String name;
     private String description;
     private Collection<Item> items;
 
     public Topic() {
+    }
+
+    public Topic(Integer id) {
+        this(id, "", "");
     }
 
     public Topic(String name, String description) {
@@ -20,6 +25,11 @@ public class Topic {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    public Topic(Topic topic) {
+        this(topic.getId(), topic.getName(), topic.getDescription());
+        setItems(topic.getItems());
     }
 
     public Integer getId() {
