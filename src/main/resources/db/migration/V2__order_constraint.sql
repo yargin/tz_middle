@@ -1,0 +1,1 @@
+alter table topic_items add unique ("order", topic_id)

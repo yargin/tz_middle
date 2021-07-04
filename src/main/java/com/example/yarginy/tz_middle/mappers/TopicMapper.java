@@ -23,7 +23,7 @@ public interface TopicMapper {
                 @Result(property = "name", column = "name"),
                 @Result(property = "description", column = "description"),
                 @Result(property = "items", column = "id",
-                        many = @Many(select = "com.example.yarginy.tz_middle.mappers.ItemMapper.selectByTopic")),
+                        many = @Many(select = "com.example.yarginy.tz_middle.mappers.ItemMapper.selectByTopicId")),
             })
     @ResultType(Topic.class)
     void selectTopicById(Integer id, TopicHandler topicHandler);
@@ -42,7 +42,7 @@ public interface TopicMapper {
             @Result(property = "name", column = "name"),
             @Result(property = "description", column = "description"),
             @Result(property = "items", column = "id",
-                    many = @Many(select = "com.example.yarginy.tz_middle.mappers.ItemMapper.selectByTopic")),
+                    many = @Many(select = "com.example.yarginy.tz_middle.mappers.ItemMapper.selectByTopicId")),
     })
     @ResultType(Topic.class)
     Collection<Topic> selectAll(TopicHandler topicHandler);

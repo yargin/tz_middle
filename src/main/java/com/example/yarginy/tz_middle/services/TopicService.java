@@ -7,7 +7,11 @@ import com.example.yarginy.tz_middle.models.Topic;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 @Service
 public class TopicService {
@@ -39,9 +43,9 @@ public class TopicService {
 
     @Transactional
     public boolean update(Topic topic) {
-        boolean topicUpdated = topicMapper.update(topic);
-        boolean itemsUpdated = itemService.update(topic.getItems());
-        return topicUpdated && itemsUpdated;
+        Collection<Item> storedItems = itemService.selectByTopic(topic);
+        itemService.update(storedItems, topic.getItems());
+        return topicMapper.update(topic);
     }
 
     public boolean delete(Topic topic) {

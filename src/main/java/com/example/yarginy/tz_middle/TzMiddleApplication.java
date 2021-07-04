@@ -3,9 +3,11 @@ package com.example.yarginy.tz_middle;
 import com.example.yarginy.tz_middle.models.Item;
 import com.example.yarginy.tz_middle.models.Topic;
 import org.apache.ibatis.type.MappedTypes;
+import org.flywaydb.core.Flyway;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
@@ -17,3 +19,4 @@ public class TzMiddleApplication {
         SpringApplication.run(TzMiddleApplication.class, args);
     }
 }
+

@@ -16,10 +16,10 @@ import java.util.Collection;
 
 @Mapper
 public interface ItemMapper {
-    @Select("select * from topic_items where topic_id=#{topic.id}")
-    Collection<Item> selectByTopic(Topic topic);
+    @Select("select * from topic_items where topic_id=#{topicId} order by \"order\"")
+    Collection<Item> selectByTopicId(Integer topicId);
 
-    @Select("select i.*, t.id, t.name from topic_items i join topic t on i.topic_id = t.id")
+    @Select("select i.*, t.id, t.name from topic_items i join topic t on i.topic_id = t.id order by t.id, i.\"order\"")
     @Results({
                 @Result(property = "id", column = "id", id = true),
                 @Result(property = "name", column = "name"),
@@ -49,4 +49,9 @@ public interface ItemMapper {
 
     @Delete("delete from topic_items where id = #{id}")
     boolean delete(Item item);
+
+    @Delete("<script> delete from topic_items where id in ( " +
+            "<foreach collection='items' item='item' separator=','>" +
+            "#{item.id} </foreach> ) </script>")
+    boolean deleteAll(Collection<Item> items);
 }

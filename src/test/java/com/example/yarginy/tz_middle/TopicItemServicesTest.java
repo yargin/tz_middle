@@ -4,12 +4,18 @@ import com.example.yarginy.tz_middle.models.Topic;
 import com.example.yarginy.tz_middle.models.Item;
 import com.example.yarginy.tz_middle.services.ItemService;
 import com.example.yarginy.tz_middle.services.TopicService;
+import org.flywaydb.core.Flyway;
+import org.flywaydb.test.annotation.FlywayTest;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,11 +30,15 @@ public class TopicItemServicesTest {
     private final Item item2 = new Item("item2", 2, topic);
 
     @Autowired
-    public TopicItemServicesTest(ItemService itemService, TopicService topicService) {
+    public TopicItemServicesTest(ItemService itemService, TopicService topicService, Flyway flyway) {
         this.itemService = itemService;
         this.topicService = topicService;
         Collection<Item> items = asList(item1, item2);
         topic.setItems(items);
+    }
+
+    @BeforeAll
+    public static void initDb() {
     }
 
     @BeforeEach
@@ -40,16 +50,11 @@ public class TopicItemServicesTest {
     }
 
     @Test
-    public void testInsertAndDeleteItems() {
-        Topic topic = new Topic("math", "");
+    public void testInsertAndDeleteItem() {
         assertTrue(topicService.insert(topic));
-        Item item = new Item("test", 1, topic);
-        assertTrue(itemService.insert(item));
-        Collection<Item> items = itemService.selectAll();
-        assertEquals(1, items.size());
-        assertTrue(itemService.delete(item));
-        items = itemService.selectAll();
-        assertEquals(0, items.size());
+        assertEquals(2, itemService.selectAll().size());
+        assertTrue(itemService.delete(topic.getItems()));
+        assertEquals(0, itemService.selectAll().size());
     }
 
     @Test
@@ -74,5 +79,18 @@ public class TopicItemServicesTest {
 
         Topic updatedTopic = topicService.selectTopicById(topic.getId());
         assertEquals(createdTopic, updatedTopic);
+    }
+
+    @Test
+    public void testModifyListOfTopicItems() {
+        topicService.insert(topic);
+        List<Item> items = new ArrayList<>();
+        items.add(item1);
+        items.get(0).setName("newModifiedName");
+        Item item3 = new Item("newItem", 3, topic);
+        items.add(item3);
+        topic.setItems(items);
+        topicService.update(topic);
+        assertEquals(topic.getItems(), items);
     }
 }
