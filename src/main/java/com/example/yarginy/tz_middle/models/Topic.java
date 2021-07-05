@@ -1,5 +1,7 @@
 package com.example.yarginy.tz_middle.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
@@ -8,6 +10,7 @@ public class Topic implements Serializable {
     private Integer id;
     private String name;
     private String description;
+    @JsonManagedReference
     private Collection<Item> items;
 
     public Topic() {

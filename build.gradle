@@ -8,15 +8,6 @@ group = 'com.example.yarginy'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-
-task fatJar(type: Jar) {
-    manifest {
-        attributes 'Main-Class': 'logging.level.com.example.yarginy.tz_middle.TzMiddleApplication'
-    }
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
 repositories {
     mavenCentral()
 }
@@ -31,12 +22,12 @@ dependencies {
     }
     implementation 'org.webjars:jquery:2.2.4'
     implementation 'org.webjars:webjars-locator-core:0.46'
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'com.hazelcast:hazelcast:4.2'
+    implementation 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0'
     testImplementation 'com.h2database:h2'
 
-    implementation group: 'com.hazelcast', name: 'hazelcast', version: '4.2'
     testImplementation ('org.flywaydb.flyway-test-extensions:flyway-spring4-test:3.2.1') {
         exclude (group: 'org.slf4j', module: 'slf4j-simple')
     }

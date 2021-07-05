@@ -4,15 +4,12 @@ import com.example.yarginy.tz_middle.models.Topic;
 import com.example.yarginy.tz_middle.models.Item;
 import com.example.yarginy.tz_middle.services.ItemService;
 import com.example.yarginy.tz_middle.services.TopicService;
-import org.flywaydb.core.Flyway;
-import org.flywaydb.test.annotation.FlywayTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,5 +86,10 @@ public class TopicItemServicesTest {
         topic.setItems(items);
         topicService.update(topic);
         assertEquals(topic.getItems(), items);
+    }
+
+    @Configuration
+    @ComponentScan("com.example.yarginy.tz_middle")
+    static class TestConfig {
     }
 }

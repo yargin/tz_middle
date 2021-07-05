@@ -7,11 +7,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 public class ItemService {
     private final ItemMapper itemMapper;
+    private final ItemComparator comparator = new ItemComparator();
 
     public ItemService(ItemMapper itemMapper) {
         this.itemMapper = itemMapper;
@@ -34,7 +38,7 @@ public class ItemService {
         if (items.isEmpty()) {
             return true;
         }
-        topic.getItems().forEach(item -> item.setTopic(new Topic(topic.getId())));
+        topic.setItems(topic.getItems().stream().sorted(comparator).collect(toList()));
         return itemMapper.insertAll(items);
     }
 
@@ -61,7 +65,7 @@ public class ItemService {
         Collection<Item> itemsToDelete = new HashSet<>(storedItems);
         itemsToDelete.removeAll(newItems);
         boolean deleted = itemsToDelete.isEmpty() || itemMapper.deleteAll(itemsToDelete);
-        newItems.forEach(i -> i.setTopic(null));
+        topic.setItems(newItems.stream().sorted(comparator).collect(toList()));
         return inserted || updated || deleted;
     }
 
@@ -71,5 +75,17 @@ public class ItemService {
 
     public boolean delete(Collection<Item> items) {
         return itemMapper.deleteAll(items);
+    }
+
+    static class ItemComparator implements Comparator<Item> {
+        @Override
+        public int compare(Item i1, Item i2) {
+            if (i1.getOrder() > i2.getOrder()) {
+                return 1;
+            } else if (i1.getOrder() < i2.getOrder()) {
+                return -1;
+            }
+            return 0;
+        }
     }
 }

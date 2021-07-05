@@ -4,6 +4,8 @@ import com.example.yarginy.tz_middle.models.Topic;
 import com.example.yarginy.tz_middle.services.TopicService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/topic")
 public class TopicController {
+    public static final Logger logger = LoggerFactory.getLogger(TopicController.class);
     private final TopicService topicService;
 
     public TopicController(TopicService topicService) {

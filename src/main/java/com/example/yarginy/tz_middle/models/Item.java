@@ -9,6 +9,7 @@ public class Item implements Serializable {
     private Integer id;
     private String name;
     private Integer order;
+    @JsonBackReference
     private Topic topic;
 
     public Item() {

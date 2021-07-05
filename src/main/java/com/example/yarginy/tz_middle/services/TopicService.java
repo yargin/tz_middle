@@ -3,7 +3,10 @@ package com.example.yarginy.tz_middle.services;
 import com.example.yarginy.tz_middle.handlers.TopicHandler;
 import com.example.yarginy.tz_middle.mappers.TopicMapper;
 import com.example.yarginy.tz_middle.models.Topic;
+import com.hazelcast.cache.HazelcastCacheManager;
 import com.hazelcast.core.HazelcastInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import static java.util.stream.Collectors.*;
 
 @Service
 public class TopicService {
+    public static final Logger logger = LoggerFactory.getLogger(TopicService.class);
     private static final String TOPICS_CACHE = "topics";
     private final ConcurrentMap<Integer, Topic> topicsCache;
     private final TopicMapper topicMapper;
@@ -39,10 +43,10 @@ public class TopicService {
             selectedTopics.forEach(topic -> topicsCache.put(topic.getId(), topic));
             unsortedTopics.addAll(selectedTopics);
         }
-        return unsortedTopics.stream().sorted((o1, o2) -> {
-            if (o1.getId() > o2.getId()) {
+        return unsortedTopics.stream().sorted((t1, t2) -> {
+            if (t1.getId() > t2.getId()) {
                 return 1;
-            } else if (o1.getId() < o2.getId()){
+            } else if (t1.getId() < t2.getId()) {
                 return -1;
             }
             return 0;
